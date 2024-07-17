@@ -1,4 +1,14 @@
 import streamlit as st
+import os
+
+# os.environ["OPENAI_API_KEY"] = os.getenv("openai_api_key")
+os.environ["OPENAI_API_KEY"] = st.secrets["openai_api_key"]
+from langchain_openai import ChatOpenAI
+model = ChatOpenAI(model="gpt-3.5-turbo")
+
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+
 
 st.set_page_config(page_title="main", page_icon="💯")
 
@@ -36,7 +46,16 @@ uploaded_file = st.file_uploader("문제를 낼 학습자료를 업로드 해주
 if uploaded_file is not None:
     st.write("uploaded!")
     
-st.button("문제 생성하기")
+if st.button("문제 생성하기"):
+    prompt = ChatPromptTemplate.from_template("tell me a short joke about {topic}")
+    output_parser = StrOutputParser()
+
+    chain = prompt | model | output_parser
+
+    prompt_value = chain.invoke({"topic": "ice cream"})
+    print(prompt_value)
+    st.write("hello world!")
+    st.write(prompt_value)
 
 
 # 이렇게 만들어서 제출하기 누르면 없애버리자..
