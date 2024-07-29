@@ -1,7 +1,7 @@
+pypdf
 streamlit
 langchain_openai
 langchain_core
 langchain_community
 langchain
 langchain_text_splitters
-pypdf
