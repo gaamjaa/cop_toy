@@ -91,18 +91,16 @@ elif st.session_state.current_page == "problem":
     documents = loader.load_and_split()
 
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1024, chunk_overlap=64)
-    docs = text_splitter.split_documents(documents)    
-
-    # print(docs[0])
-    
+    datas = text_splitter.split_documents(documents)    
+  
     embeddings = OpenAIEmbeddings()
-    vectorstore = FAISS.from_documents(docs, embeddings)
+    vectorstore = FAISS.from_documents(datas, embeddings)
 
     # retriever = vectorstore.as_retriever()
-    # docs = retriever.invoke("what did the president say about ketanji brown jackson?")
+    # datas = retriever.invoke("what did the president say about ketanji brown jackson?")
 
     qa_retriever = vectorstore.as_retriever(
-        search_type="similarity",
+        search_type="mmr",
         search_kwargs={"k": 3},
     )
     
@@ -138,7 +136,7 @@ elif st.session_state.current_page == "problem":
 
     docs = qa({"query": "첨부된 문서에 대한 문제를 만들어줘."})
     lines = docs["result"].splitlines()    
-        
+    
     cnt = 0
     for i in range(len(lines)):
         if len(lines[i].replace(" ", "")) == 0:
