@@ -4,3 +4,4 @@ langchain_core
 langchain_community
 langchain
 langchain_text_splitters
+pypdf==4.3.1
