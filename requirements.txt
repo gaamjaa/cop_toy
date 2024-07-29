@@ -1,5 +1,5 @@
-pypdf
 streamlit
+pypdf
 langchain_openai
 langchain_core
 langchain_community
